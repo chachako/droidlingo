@@ -1,0 +1,29 @@
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: ['config:base', ':automergeMinor'],
+  labels: ['dependencies', 'bot'],
+
+  platformAutomerge: true,
+
+  automergeType: "pr",
+  automergeStrategy: "squash",
+
+  // Conventional Commit: <type>(<scope>): update <dep> to <version>
+  semanticCommits: 'enabled',
+  commitMessageTopic: '{{depName}}',
+
+  packageRules: [
+    {
+      // Allow automerge for non-major updates
+      matchUpdateTypes: ['minor', 'patch'],
+      labels: ['no-major'],
+      automerge: true,
+    },
+    {
+      // Mark the commit type of updates for the Github actions
+      matchManagers: ['github-actions'],
+      semanticCommitType: 'ci',
+      automerge: true,
+    },
+  ],
+}
